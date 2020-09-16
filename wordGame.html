@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+
+<!--
+    Hayden Thomas
+    IS 303
+    September 14th, 2020
+
+    Description:
+
+    You will need to create the embedded JavaScript necessary for a user to play your game. 
+    Keep everything in this one file. The purpose of the game is to randomly choose a song 
+    from a pre-defined list of 1980's songs (like hangman). Here is the global array you can use: 
+    // This array contains the songs with spaces removed 
+    let asSongs = ["rocklobster", "peoplearepeople", "onceinalifetime", "sweetdreams", 
+    "missionaryman", "safetydance", "onlyalad", "whipit", "99redballoons"];
+
+    This program should have a Person class that has a firstName, lastName, and age attribute. 
+    It should also have a constructor that allows the user to pass it the first and last name. 
+    Remember, you might never assign data to an attribute in a class but it is still part of the class.
+
+    The program should also have a Contestant class that is inherited from the Person class. 
+    It has the numberOfGamesPlayed attribute (int) and totalNumberOfGuesses. It also has a 
+    gamesPlayed attribute which keep track of all of the games played (this will be an array 
+    of GamesPlayed objects). The Contestant class should have a constructor that receives the 
+    parent's attributes and loads them properly as we have learned in OOP, and then initialize 
+    the numberOfGamesPlayed, totalNumberOfGuesses, and the gamesPlayed attributes. The Contestant 
+    class should also have a method called showResults that returns a message with the first 
+    and last name concatenated along with the number of guesses any completed games. 
+    Only return that data if the game was completed. Otherwise if they have played a 
+    game but have not completed any games, return the message first and last name 
+    concatenated " has not finished a game". Otherwise if they have played a game and 
+    finished it, then the method returns a string like:
+
+    Greg Anderson has made 235 guesses
+    Gina Anderson has not finished a game
+
+    where the name was retrieved by calling a method in the Contestant class called 
+    getFullName which returned the concatenated firstName and lastName attributes.
+    The showResults method then concatenates " has made " and the guessCount 
+    (from the completed games) from the array of gamesPlayed attribute (objects of GamesPlayed) 
+    and " guesses". Do NOT USE THE totalNumberOfGuesses since this could include unfinished games.
+
+    Or if they have not finished a game then the method calls the fullName method 
+    along with " has not finished a game". Make sure the message is bolded by dynamically 
+    building that into the string. This information might never be called the but 
+    showResults method needs to exist in the Contestant class. The program should 
+    use a global variable that is an array of Contestant objects. This array would hold 
+    each contestant and the games that they have played. It can hold multiple contestants 
+    who have played 0 to many games.
+
+    If the user clicks on the Reset Form button the code should clear out the localStorage, 
+    the global array of Contestant objects, reload the available characters string 
+    ("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789") and clear out the used characters string (""). 
+    NOTE: DO NOT USE THE onclick name of RESET.
+
+    Call the function ResetMe. This function should make the screen look like it does 
+    when it is first displayed and no game has been played.
+
+    The GamesPlayed class has the guessCount (int) and the finishedGame (boolean) attributes. 
+    When the GamesPlayed object is created the constructor does NOT receive parameters 
+    but should set the guessCount to 0 and the finishedGame should be set to false. NOTE: 
+    When calling the Contestant showResults method, you should only count those games 
+    where the finishedGame attribute value is true for the message fullname has made 
+    # guesses. (i.e. Greg Anderson has made 235 guesses)
+
+    When the screen is first displayed, you should not see many items from the html page. 
+    Once you click on the Play Game button the user MUST enter the first and then the 
+    last name using a prompt. You will create the Contestant object and add it to the 
+    global array of uses. Then the Play Game button should disappear and p tags 
+    displayTitleName (currently underscores for each letter in the title until letters are guessed) 
+    and titleNote should be displayed along with all of the field sets for the available 
+    characters, used characters, and the fieldset controlling the guesses. When the user 
+    clicks on the Play Game button, the playGame function will be called.
+
+    NOTE: You will have to write event handlers for your buttons and attach them to the 
+    associated button. The Play Game function should: Get the player's first name 
+    and last name from prompts and create a new contestant object and assign it to the global array. 
+    They MUST enter a first name and a last name. Do not let them out of the prompt unless 
+    there is a value for first and last. Store this object along with all other contestants 
+    in the global array called aoContestants.
+
+    You will also keep track of the letters of the alphabet you can use and another string 
+    to keep track of which letters have been used.
+
+    Generate a random number and use this to extract a song title to solve from the array asSongs
+
+    Generate and display the title for the displayTitleName with underscores in the place 
+    of characters (i.e. _________ )
+
+    For example, whipit would be 6 underscores next to each other without spaces
+
+    Make sure you are showing the displayTitleName, titleNote, fsPlay, fsAvailable, and fsUsed 
+    ieldset html objects in the html file. The cursor should then be programmatically placed 
+    in the input text area called inputLetter. NOTE: This input should only allow 1 character 
+    to be typed. When the user clicks on the btnGuess you should: Check to see if the letter 
+    they typed is available to choose from the letters in the alphabet which have not been used. 
+    If the letter is available check to see if the letter is in the title name. Remember that 
+    case does not matter! If you found the letter in the title and you haven’t already 
+    used that letter, fill in the underscore title with the letter found and remove it from 
+    the letters used array and add it to the letters used array. Order of the used 
+    letters does not matter.
+
+    Display the available letters in the correct p tag and the used letters in the correct 
+    p tag. For example, if they just entered in a single character check to see if that 
+    character is in the title and if so, display all occurrences of that letter (i.e. __A___A___).
+
+    Display the character(s) as uppercase and increment the guess counter for that user. 
+    As they choose letters/numbers remove them from the letters available and add them to 
+    the letters/numbers used and increment the guess counter. If they try to use a 
+    letter already used, display a message (alert) but do not increment guess counter. 
+    If they choose a letter that is not A-Z or 0-9 then display a message (alert) saying 
+    it is invalid and do not increment the counter. The letters/numbers used and available 
+    etters/numbers should be displayed as bold (do not change the original HTML tag. 
+    Instead, do this dynamically through the use of JavaScript)
+
+    After they choose a letter/number, set the focus back to the input area by highlighting 
+    the character or data inside of that input. This can be done with the select() method. 
+    Then check to see if they won the game by answering all of the letters (You will need 
+    to write the checkWin function NOT A METHOD)
+
+    The checkWin function should see if there are any more letters/numbers in the song title 
+    that have not been displayed. If all of the letters have been displayed and the guess 
+    count is less than 26 then show the message (alert) "You Solved it with # of guesses!" 
+    (where # is the number of guesses it took) Otherwise show the message (alert) 
+    "You took too many guesses". If the game is over, this function should update the 
+    Contestant and GamesPlayed objects in the array by updating the totalNumberOfGuesses 
+    (keeps a running total for all games), finishedGame to true (for the current game, 
+    and increment numberOfGamesPlayed attributes. Also, clear out the input and reset the 
+    display for the available and used characters.
+
+    Then the function should hide the fsAvailable, fsUsed, and fsPlay fieldsets and display 
+    the Play Again with SAME user button and the Play Again with DIFFERENT user button.
+
+    If they click on the Play Again with SAME user button then call the playAgain function 
+    which does everything the playGame function does BUT DOES NOT prompt or create a new user.
+
+    If they click on the Play Again with DIFFERENT user You will just call the playGame function.
+
+    If they clicked on the Final Guess button you would check to see what they typed in 
+    the finalGuess input and see if it matched the whole song title (case doesn’t matter). 
+    If they get it right, add one to the guess counter. If they did not, add 26 to the guess 
+    counter. Update the objects.
+
+    You need to keep track of each game played for each user. You will create a GamesPlayed 
+    object for each game and add that to the Contestant's array of games. You will use this 
+    object to keep track of the number of guesses for each game and whether the game was 
+    completed. You will also continue to update the total number of guesses for each user 
+    as the finish the games.
+
+    If the user clicks on the Show Games button then the program should call the showGames 
+    function. This function will sort the global array that contains all of the data based 
+    upon the user’s total number of guesses for all the games. We want to see who has guessed 
+    the most.
+
+    The data should be sorted in descending order by number of totalNumberOfGuesses (we don’t 
+    care if they did not finish the game). Then store that sorted array to the local storage 
+    and open a new window called gameOutput.html In the gameOutput.html file that you will 
+    need to create, you will display the sorted data. You can decide how you want to sort the 
+    data but it has to be readable and understandable. IOW, you have to process thru the 
+    local storage and make it look somewhat nice.
+
+    You will need to display the full name along with the number of games and the 
+    total number of guesses.
+
+    Greg Anderson 454 guesses
+    Gina Anderson 249 guesses
+    Miles Anderson 15 guesses
+
+    Make sure you follow the directions!
+
+    NOTES: Make sure you handle whether the user types in a upper or lower case character 
+    (they should be treated the same)
+
+    Make sure you put appropriate comments Make sure you use appropriate variable naming
+
+    Make sure you use appropriate OOP structured programming as learned in our course.
+
+    When you have finished the program copy your code from BOTH files and paste it here in 
+    the answer area
+
+-->
+
+<html>
+<head>
+<title>Word Guess Game</title>
+<script src="wordGame.js"></script>
+<link rel="stylesheet" href="wordGame.css">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="wholeBody">
+        <div class="header">
+            <h1>Word Guess Game</h1>
+            <h3 id="nameTitle"></h3>
+            <h4 id="winLoseStatement"></h4>
+        </div>
+        <div class="topbuttons" id="topbuttons">
+            <input type="button" value="Play Game" id="btnPlayGame" onclick="playGame()">
+            <br><br>
+            <input type="button" id="btnPlayAgainSame" value="Play Again with SAME user?" style="display: none;" onclick="playAgain()">
+            <br><br>
+            <input type="button" id="btnPlayAgainDiff" value="Play Again with DIFFERENT user?" style="display: none;" onclick="playGame()">
+            <br><br> 
+        </div>  
+        <div class="content" id="content">
+            <p id="displayTitleName" style="display: none;"></p>
+            <p id="titleNote" style="display: none;">NOTE: Spaces have been removed from the song title</p>
+            <br><br>
+            <fieldset  id="fsAvailable" style="width:0px; display: none;">
+                <legend><strong><em>Available Characters:</em></strong></legend>
+                    <p id="availableChars"></p>
+            </fieldset>
+            <br><br>
+            <fieldset id="fsUsed" style="width:0px; display: none;">
+                <legend><strong><em>Used Characters:</em></strong></legend>
+                <p id="usedChars"></p>
+            </fieldset>
+            <br><br>
+            <fieldset id="fsPlay" style="width:0px; display: none;">
+                <label for="input">Enter Character:</label>
+                <input type="text" id="inputLetter" maxlength="1">
+                <br><br>
+                <input type="button" id="btnGuess" value="Submit Character" onclick="checkGuess()">
+                <br>
+                <p><strong>OR</strong></p>
+                <br>
+                <label for="finalGuess">Enter Your Final Guess:</label>
+                <input type="text" id="finalGuess">
+                <em>NOTE:But if you guess wrong, 26 will be added to your guess count</em>
+                <br><br>
+                <input type="button" id="btnFinalGuess" value="Final Guess" onclick="finalGuess()">
+                <br><br>
+            </fieldset>
+        </div>
+        <div class="bottombuttons">
+            <br><br>
+            <input type="button" id="btnShowGames" value="Show Games" onclick="showGames()">
+            <input type="button" id="btnResetForm" value="Reset Form" onclick="ResetMe()">  
+        <div>  
+    </div>  
+</body>
+</html>

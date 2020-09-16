@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Guess Game - Games</title>
+    <link rel="stylesheet" href="wordGame.css">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600&display=swap" rel="stylesheet">
+    <script>
+        function load(){
+        var sOutput = "";
+
+        //Goes and grabs from local storage, the ouput
+        sOutput = localStorage.getItem("output");
+
+        document.getElementById("output").style.fontWeight = 900;
+        document.getElementById("output").innerHTML = sOutput;
+        }
+    </script>
+</head>
+<body onload="load()">
+    <div class="header">
+        <h1>Games:</h1>
+    </div>
+    <div class="header">
+        <p id="output">
+    </div>
+</body>
+</html>
